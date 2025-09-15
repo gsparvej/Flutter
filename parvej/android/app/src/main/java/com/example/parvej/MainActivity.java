@@ -1,4 +1,4 @@
-package com.example.firstflutter;
+package com.example.parvej;
 
 import io.flutter.embedding.android.FlutterActivity;
 
