@@ -147,7 +147,18 @@ class Registration extends StatefulWidget {
                   SizedBox(
                     height: 20.0,
                   ),
-                  // Gender Selection ekhan theke suru korte hbe 
+                  // Gender Selection ekhan theke suru korte hbe
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Gender:" ,
+                        )
+                      ],
+                    ),
+                    ,
+                  )
 
 
 
