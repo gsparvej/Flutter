@@ -30,4 +30,24 @@ class ItemService {
       throw Exception('Failed to load Buyers (${response.statusCode})');
     }
   }
+
+
+
+  Future<bool> addItem(Item item) async {
+
+    String? token = await AuthService().getToken();
+
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(item.toJson()),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      print('Error: ${response.statusCode} ${response.body}');
+      return false;
+    }
+  }
 }

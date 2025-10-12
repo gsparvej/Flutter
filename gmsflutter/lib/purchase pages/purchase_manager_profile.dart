@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
+import 'package:gmsflutter/purchase%20pages/save_item.dart';
 import 'package:gmsflutter/purchase%20pages/view_half_po.dart';
 import 'package:gmsflutter/purchase%20pages/view_inventory.dart';
 import 'package:gmsflutter/purchase%20pages/view_item.dart';
@@ -71,7 +72,22 @@ class PurchaseManagerProfile extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text('Add Item'),
               onTap: () async{
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                MaterialPageRoute(
+                    builder: (context) => SaveItem())
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Add Vendor'),
+              onTap: () async{
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SaveItem())
+                );
               },
             ),
 

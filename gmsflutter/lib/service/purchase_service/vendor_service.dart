@@ -49,4 +49,22 @@ class VendorService {
       throw Exception('Failed to load vendor (${response.statusCode})');
     }
   }
+  
+  Future<bool> addVendor(Vendor vendor) async {
+
+    String? token = await AuthService().getToken();
+
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(vendor.toJson()),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      print('Error: ${response.statusCode} ${response.body}');
+      return false;
+    }
+  }
 }
