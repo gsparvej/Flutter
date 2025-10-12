@@ -6,7 +6,10 @@ import 'package:gmsflutter/merchandiser%20page/merchandiser_profile.dart';
 import 'package:gmsflutter/purchase%20pages/purchase_manager_profile.dart';
 import 'package:gmsflutter/service/auth_service.dart';
 import 'package:gmsflutter/service/merchandiser_service/merchandiser_profile_service.dart';
+import 'package:gmsflutter/service/production_service/production_manager_profile_service.dart';
 import 'package:gmsflutter/service/purchase_service/purchase_manager_profile_service.dart';
+
+import '../production pages/production_manager_profile.dart';
 
 
 class Login extends StatelessWidget {
@@ -19,6 +22,7 @@ class Login extends StatelessWidget {
   MerchandiserManagerService merchandiserManagerService =
   MerchandiserManagerService();
   PurchaseManagerService purchaseManagerService = PurchaseManagerService();
+  ProductionManagerProfileService productionManagerProfileService = ProductionManagerProfileService();
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +115,22 @@ class Login extends StatelessWidget {
         }
 
       }
+      else if (role == 'PRODUCTIONMANAGER') {
+        final profile = await productionManagerProfileService
+            .getProductionManagerProfile();
+        if(profile != null){
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductionManagerProfile(profile: profile),
+            ),
+          );
 
+        } else {
+          print('Unknown role: $role');
+        }
+
+      }
 
 
     }

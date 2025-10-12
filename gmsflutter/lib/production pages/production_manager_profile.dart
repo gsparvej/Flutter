@@ -2,20 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
-import 'package:gmsflutter/purchase%20pages/view_half_po.dart';
-import 'package:gmsflutter/purchase%20pages/view_inventory.dart';
-import 'package:gmsflutter/purchase%20pages/view_item.dart';
-import 'package:gmsflutter/purchase%20pages/view_requisition_list.dart';
-import 'package:gmsflutter/purchase%20pages/view_vendor_list.dart';
+import 'package:gmsflutter/production%20pages/save_cut_bundle.dart';
+import 'package:gmsflutter/production%20pages/view_cut_bundle.dart';
+import 'package:gmsflutter/production%20pages/view_cutting_plan.dart';
 import 'package:gmsflutter/service/auth_service.dart';
 
 
-class PurchaseManagerProfile extends StatelessWidget {
+class ProductionManagerProfile extends StatelessWidget {
   final Map<String, dynamic> profile;
   final AuthService _authService = AuthService();
   // final BuyerService buyerService = BuyerService();
 
-  PurchaseManagerProfile({Key? key, required this.profile}) : super(key: key);
+  ProductionManagerProfile({Key? key, required this.profile}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +21,7 @@ class PurchaseManagerProfile extends StatelessWidget {
     // BASE URL for loading images
     // ----------------------------
     final String baseUrl =
-        "http://localhost:8080/images/rolePurchaseManager/";
+        "http://localhost:8080/images/roleProductionManager/";
     final String? photoName = profile['photo'];
     final String? photoUrl = (photoName != null && photoName.isNotEmpty)
         ? "$baseUrl$photoName"
@@ -36,7 +34,7 @@ class PurchaseManagerProfile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Purchase Manager Profile',
+          'Production Manager Profile',
           style: TextStyle(color: Colors.orangeAccent),
         ),
         backgroundColor: Colors.black12,
@@ -67,9 +65,21 @@ class PurchaseManagerProfile extends StatelessWidget {
               ),
             ),
             // 🟣 Menu Items (you can add more later)
+
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Add Item'),
+              title: const Text('Add Cut Bundle'),
+              onTap: () async{
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SaveCutBundle())
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text(' Production Summary'),
               onTap: () async{
                 Navigator.pop(context);
               },
@@ -80,67 +90,54 @@ class PurchaseManagerProfile extends StatelessWidget {
 
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('View Item'),
+              title: const Text('Line List'),
               onTap: () async{
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewItem(),
-                  ),
-                );
+
               },
             ),
-
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('View PO'),
+              title: const Text('Machine List'),
+              onTap: () async{
+
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('View Production Orders'),
+              onTap: () async{
+
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('View Day Wise Production'),
+              onTap: () async{
+
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('View Cutting Plans'),
               onTap: () async{
                 Navigator.push(
                     context,
-                MaterialPageRoute(
-                    builder: (context) => ViewHalfPO())
+                    MaterialPageRoute(
+                        builder: (context) => ViewCuttingPlan())
                 );
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('View Requisitions'),
+              title: const Text('View Cut Bundle'),
               onTap: () async{
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewRequisitionList(),
-                  ),
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewCutBundle())
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Inventory'),
-              onTap: () async{
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewInventory(),
-                  ),
-                );
-              },
-            ),
-
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Vendor List'),
-              onTap: () async{
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewVendorList(),
-                  ),
-                );
-              },
-            ),
-
-
             const Divider(),
 
             // 🔴 Logout Option

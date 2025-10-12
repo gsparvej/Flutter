@@ -1,68 +1,83 @@
 import 'package:flutter/material.dart';
-import 'package:gmsflutter/entity/purchase_part/vendor.dart';
-import 'package:gmsflutter/purchase%20pages/vendor_details_by_id.dart';
-import 'package:gmsflutter/service/purchase_service/vendor_service.dart';
+import 'package:gmsflutter/entity/purchase_part/purchase_order.dart';
+import 'package:gmsflutter/purchase%20pages/view_full_po.dart';
+import 'package:gmsflutter/service/purchase_service/purchase_order_service.dart';
+import 'package:intl/intl.dart';
 
-class ViewVendorList extends StatefulWidget {
-  const ViewVendorList({Key? key}) : super(key: key);
+import 'view_full_requisition.dart';
+
+class ViewHalfPO extends StatefulWidget {
+
+  const ViewHalfPO({Key? key}) : super(key: key);
 
   @override
-  State<ViewVendorList> createState() => _ViewVendorListState();
+  State<ViewHalfPO> createState() => _ViewHalfPOState();
 }
 
-class _ViewVendorListState extends State<ViewVendorList> {
-  late Future<List<Vendor>> vendorList;
+class _ViewHalfPOState extends State<ViewHalfPO> {
+  late Future<List<PurchaseOrder>> purchaseOrderList;
 
   @override
   void initState() {
     super.initState();
-    vendorList = VendorService().fetchVendor();
+    purchaseOrderList = PurchaseOrderService().fetchPOs();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('All Vendor List')),
-      body: FutureBuilder<List<Vendor>>(
-        future: vendorList,
+      appBar: AppBar(title: const Text('All PO List')),
+      body: FutureBuilder<List<PurchaseOrder>>(
+        future: purchaseOrderList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No Vendor List Available'));
+            return const Center(child: Text('No Purchase Order List Available'));
           } else {
-            final vendors = snapshot.data!;
+            final purchase = snapshot.data!;
             return ListView.builder(
-              itemCount: vendors.length,
+              itemCount: purchase.length,
               itemBuilder: (context, index) {
-                final v = vendors[index];
+                final po = purchase[index];
                 return Card(
                   margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   child: ListTile(
                     title: Text(
-                      "Company Name: ${display(v.companyName)}",
+                      "Delivery Date: ${formatLocalDate(po.deliveryDate)}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
+
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 4),
-                        Text("Contact Number: ${display(v.phone)}"),
+                        Text(
+                          "PO Date: ${formatLocalDate(po.poDate)}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text("PO Number: ${display(po.poNumber)}"),
+                        Text("Vendor Name: ${display(po.vendor?.companyName)}"),
                         const SizedBox(height: 8),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: ElevatedButton(
                             onPressed: () async {
-                             Vendor ven = await VendorService().getVendorById(v.id!);
+                              PurchaseOrder pur = await PurchaseOrderService().getPOsById(po.id!);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => VendorDetailsPage(vendor: ven),
+                                  builder: (context) => ViewFullPO(purchase: pur),
                                 ),
                               );
                             },
@@ -91,4 +106,16 @@ class _ViewVendorListState extends State<ViewVendorList> {
     if (value.trim().isEmpty) return 'N/A';
     return value;
   }
+
+  String formatLocalDate(String? dateStr) {
+    if (dateStr == null || dateStr.trim().isEmpty) return "N/A";
+    try {
+      final date = DateTime.parse(dateStr);
+      final formatter = DateFormat.yMMMMd('en_US'); // Example: October 12, 2025
+      return formatter.format(date);
+    } catch (e) {
+      return "Invalid Date";
+    }
+  }
+
 }

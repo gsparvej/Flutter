@@ -21,7 +21,7 @@ class InventoryService {
       },
     );
 
-    // 3️⃣ Handle response
+    //  Handle response
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => Inventory.fromJson(json)).toList();

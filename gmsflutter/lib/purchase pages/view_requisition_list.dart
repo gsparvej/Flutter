@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:gmsflutter/entity/purchase_part/requisition_list_entity.dart';
-import 'package:gmsflutter/purchase%20pages/view_vendor_list.dart';
+import 'package:gmsflutter/entity/purchase_part/full_requisition.dart'; // ✅ Import the full requisition model
+import 'package:gmsflutter/purchase%20pages/view_full_requisition.dart';
 import 'package:gmsflutter/service/purchase_service/requisition_service.dart';
-import 'package:intl/intl.dart'; // 🔹 intl import
 
 class ViewRequisitionList extends StatefulWidget {
   const ViewRequisitionList({Key? key}) : super(key: key);
@@ -60,15 +64,29 @@ class _ViewRequisitionListState extends State<ViewRequisitionList> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ViewVendorList(),
-                                ),
-                              );
-                            },
-                            child: const Text('View'),
+                              onPressed: () async {
+                                try {
+                                  print("Fetching requisition by ID: ${requi.id}");
+                                  FullRequisition fullRequisition =
+                                  await RequisitionService().getRequisitionById(requi.id!);
+                                  print("Received JSON: ${jsonEncode(fullRequisition.toJson())}");
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ViewFullRequisition(requisition: fullRequisition),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print("Error: $e");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Failed to load requisition details")),
+                                  );
+                                }
+                              },
+
+                              child: const Text('View'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepPurple,
                               foregroundColor: Colors.white,
@@ -88,20 +106,17 @@ class _ViewRequisitionListState extends State<ViewRequisitionList> {
     );
   }
 
-  /// 🔹 তারিখ লোকাল ফরম্যাটে রূপান্তর করে
   String formatLocalDate(String? dateStr) {
     if (dateStr == null || dateStr.trim().isEmpty) return "N/A";
     try {
       final date = DateTime.parse(dateStr);
-      final formatter = DateFormat.yMMMMd('en_US'); // 🔹 English format
+      final formatter = DateFormat.yMMMMd('en_US');
       return formatter.format(date);
     } catch (e) {
       return "Invalid Date";
     }
   }
 
-
-  /// 🔹 ফাঁকা বা null হলে N/A রিটার্ন করে
   String display(String? value) {
     if (value == null || value.trim().isEmpty) return 'N/A';
     return value;

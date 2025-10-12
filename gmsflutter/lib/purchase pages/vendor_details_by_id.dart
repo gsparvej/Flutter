@@ -40,7 +40,7 @@ class VendorDetailsPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                buildRow("Vendor Name", displayValue(vendor.vendorName)),
+                buildRow("Vendor Name", displayValue(vendor.companyName)),
                 buildRow("Contact Person", displayValue(vendor.contactPerson)),
                 buildRow("Email", displayValue(vendor.email)),
                 buildRow("Phone", displayValue(vendor.phone)),
