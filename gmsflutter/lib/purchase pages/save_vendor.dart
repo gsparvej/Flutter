@@ -20,20 +20,30 @@ class _SaveVendorState extends State<SaveVendor> {
   final _tinController = TextEditingController();
   final _binController = TextEditingController();
   final _vatController = TextEditingController();
-
   Future<void> saveVendor() async {
+    // Check main required fields
     if (_vendorNameController.text.isEmpty ||
         _contactPersonController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        _addressController.text.isEmpty ||
-        (_tinController.text.isEmpty && _binController.text.isEmpty && _vatController.text.isEmpty)) {
-      // Show error or return
-    }
-    {
+        _addressController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please fill the required fields properly'),
+          content: Text('Please fill all required fields'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Check at least one of TIN, BIN, VAT is filled
+    if (_tinController.text.isEmpty &&
+        _binController.text.isEmpty &&
+        _vatController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please provide at least one of TIN, BIN, or VAT'),
+          backgroundColor: Colors.red,
         ),
       );
       return;
@@ -41,7 +51,7 @@ class _SaveVendorState extends State<SaveVendor> {
 
     final vendor = Vendor(
       vendorName: _vendorNameController.text,
-      companyName: _vendorNameController.text,
+      companyName: _vendorNameController.text, // Adjust if needed
       contactPerson: _contactPersonController.text,
       email: _emailController.text,
       phone: _phoneController.text,
@@ -51,7 +61,7 @@ class _SaveVendorState extends State<SaveVendor> {
       vat: _vatController.text,
     );
 
-    print(vendor.toJson()); // Debug log
+    print(vendor.toJson()); // Debug
 
     bool success = await vendorService.addVendor(vendor);
 
@@ -63,7 +73,7 @@ class _SaveVendorState extends State<SaveVendor> {
     );
 
     if (success) {
-      // Optionally clear form after success
+      // Clear form
       _vendorNameController.clear();
       _contactPersonController.clear();
       _emailController.clear();
@@ -74,6 +84,7 @@ class _SaveVendorState extends State<SaveVendor> {
       _vatController.clear();
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
