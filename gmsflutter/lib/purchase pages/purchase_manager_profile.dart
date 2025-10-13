@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
 import 'package:gmsflutter/purchase%20pages/save_item.dart';
+import 'package:gmsflutter/purchase%20pages/save_vendor.dart';
 import 'package:gmsflutter/purchase%20pages/view_half_po.dart';
 import 'package:gmsflutter/purchase%20pages/view_inventory.dart';
 import 'package:gmsflutter/purchase%20pages/view_item.dart';
@@ -86,7 +87,7 @@ class PurchaseManagerProfile extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SaveItem())
+                        builder: (context) => SaveVendor())
                 );
               },
             ),
