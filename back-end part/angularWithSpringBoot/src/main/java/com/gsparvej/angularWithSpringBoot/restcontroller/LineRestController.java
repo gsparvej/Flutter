@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping("/api/line")
 @CrossOrigin("*")
 public class LineRestController {
-
     @Autowired
     private LineService lineService;
 

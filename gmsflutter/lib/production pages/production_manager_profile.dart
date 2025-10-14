@@ -1,16 +1,17 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
+import 'package:gmsflutter/production%20pages/production_summary.dart';
 import 'package:gmsflutter/production%20pages/save_cut_bundle.dart';
 import 'package:gmsflutter/production%20pages/view_cut_bundle.dart';
 import 'package:gmsflutter/production%20pages/view_cutting_plan.dart';
+import 'package:gmsflutter/production%20pages/view_day_wise_production.dart';
+import 'package:gmsflutter/production%20pages/view_production_order.dart';
 import 'package:gmsflutter/service/auth_service.dart';
-
 
 class ProductionManagerProfile extends StatelessWidget {
   final Map<String, dynamic> profile;
   final AuthService _authService = AuthService();
+
   // final BuyerService buyerService = BuyerService();
 
   ProductionManagerProfile({Key? key, required this.profile}) : super(key: key);
@@ -61,80 +62,87 @@ class ProductionManagerProfile extends StatelessWidget {
                 backgroundImage: (photoUrl != null)
                     ? NetworkImage(photoUrl)
                     : const AssetImage('assets/default_avatar.jpg')
-                as ImageProvider,
+                          as ImageProvider,
               ),
             ),
-            // 🟣 Menu Items (you can add more later)
 
+            // 🟣 Menu Items (you can add more later)
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Add Cut Bundle'),
-              onTap: () async{
+              onTap: () async {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SaveCutBundle())
+                  context,
+                  MaterialPageRoute(builder: (context) => SaveCutBundle()),
                 );
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text(' Production Summary'),
-              onTap: () async{
-                Navigator.pop(context);
+              title: const Text('Production Summary'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const AllSummaryPage(), // ✅ No orderId passed
+                  ),
+                );
               },
             ),
 
             const Divider(),
 
-
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Line List'),
-              onTap: () async{
-
-              },
+              onTap: () async {},
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Machine List'),
-              onTap: () async{
-
-              },
+              onTap: () async {},
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('View Production Orders'),
-              onTap: () async{
-
+              onTap: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewProductionOrder(),
+                  ),
+                );
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('View Day Wise Production'),
-              onTap: () async{
-
+              onTap: () async {
+                Navigator.push(
+                    context,
+                MaterialPageRoute(
+                    builder: (context) => ViewDayWiseProduction())
+                );
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('View Cutting Plans'),
-              onTap: () async{
+              onTap: () async {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ViewCuttingPlan())
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewCuttingPlan()),
                 );
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('View Cut Bundle'),
-              onTap: () async{
+              onTap: () async {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ViewCutBundle())
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewCutBundle()),
                 );
               },
             ),
@@ -144,21 +152,17 @@ class ProductionManagerProfile extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.deepOrange),
               title: const Text(
-                  'Logout',
-                  style: TextStyle(color: Colors.deepOrange)
+                'Logout',
+                style: TextStyle(color: Colors.deepOrange),
               ),
               onTap: () async {
                 await _authService.logout();
-                Navigator.push(context,
+                Navigator.push(
+                  context,
                   MaterialPageRoute(builder: (_) => Login()),
                 );
               },
-
-
             ),
-
-
-
           ],
         ),
       ),
@@ -166,7 +170,6 @@ class ProductionManagerProfile extends StatelessWidget {
       // ----------------------------
       // BODY: Main content area
       // ----------------------------
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -182,10 +185,7 @@ class ProductionManagerProfile extends StatelessWidget {
                     offset: Offset(0, 5),
                   ),
                 ],
-                border: Border.all(
-                  color: Colors.green,
-                  width: 3,
-                ),
+                border: Border.all(color: Colors.green, width: 3),
               ),
               child: CircleAvatar(
                 radius: 60, // image size
@@ -193,11 +193,10 @@ class ProductionManagerProfile extends StatelessWidget {
                 backgroundImage: (photoUrl != null)
                     ? NetworkImage(photoUrl) // from backend
                     : const AssetImage('assets/default_avatar.png')
-                as ImageProvider,
+                          as ImageProvider,
               ),
             ),
             SizedBox(height: 20),
-
           ],
         ),
       ),
