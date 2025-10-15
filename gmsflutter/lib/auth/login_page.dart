@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gmsflutter/admin%20page/admin_profile.dart';
 import 'package:gmsflutter/merchandiser%20page/merchandiser_profile.dart';
 import 'package:gmsflutter/purchase%20pages/purchase_manager_profile.dart';
+import 'package:gmsflutter/service/admin_service/admin_profile_service.dart';
 import 'package:gmsflutter/service/auth_service.dart';
 import 'package:gmsflutter/service/merchandiser_service/merchandiser_profile_service.dart';
 import 'package:gmsflutter/service/production_service/production_manager_profile_service.dart';
@@ -19,6 +20,7 @@ class Login extends StatelessWidget {
 
   final storage = new FlutterSecureStorage();
   AuthService authService = AuthService();
+  AdminProfileService adminProfileService = AdminProfileService();
   MerchandiserManagerService merchandiserManagerService =
   MerchandiserManagerService();
   PurchaseManagerService purchaseManagerService = PurchaseManagerService();
@@ -79,10 +81,18 @@ class Login extends StatelessWidget {
       // Successful login , role-based navigation
       final role = await authService.getUserRole();
       if (role == 'ADMIN') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => AdminProfile()),
-        );
+        final profile = await adminProfileService.getAdminProfile();
+        if(profile != null){
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminProfile(profile: profile),
+            ),
+          );
+
+        } else {
+          print('Unknown role: $role');
+        }
       } else if (role == 'MERCHANDISERMANAGER') {
         final profile = await merchandiserManagerService
             .getMerchandiserManagerProfile();

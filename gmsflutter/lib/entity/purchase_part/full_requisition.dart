@@ -1,4 +1,4 @@
-import 'package:gmsflutter/entity/department.dart';
+import 'package:gmsflutter/entity/admin_entity/department.dart';
 import 'package:gmsflutter/entity/merchandiser_part/order.dart';
 import 'package:gmsflutter/entity/purchase_part/item.dart';
 

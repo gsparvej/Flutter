@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
 import 'package:gmsflutter/merchandiser%20page/view_buyer.dart';
+import 'package:gmsflutter/merchandiser%20page/view_half_order.dart';
+import 'package:gmsflutter/merchandiser%20page/view_raw_materials_check.dart';
 import 'package:gmsflutter/merchandiser%20page/view_uom.dart';
 import 'package:gmsflutter/service/auth_service.dart';
 
@@ -110,14 +112,19 @@ class MerchandiserProfile extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text('View Half Order'),
               onTap: () async{
-                Navigator.pop(context);
+                Navigator.push(
+                  context, 
+                MaterialPageRoute(builder: (context) => ViewHalfOrder()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('View Raw Materials Check'),
               onTap: () async{
-                Navigator.pop(context);
+                Navigator.push(
+                  context, 
+                MaterialPageRoute(builder: (context) => ViewRawMaterialsCheck())
+                );
               },
             ),
 
