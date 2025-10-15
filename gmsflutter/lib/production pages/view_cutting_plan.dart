@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gmsflutter/entity/production_part/cutting_plan.dart';
+import 'package:gmsflutter/entity/production_entities/cutting_plan.dart';
 import 'package:gmsflutter/service/production_service/cutting_plan_service.dart';
 import 'package:intl/intl.dart';
 

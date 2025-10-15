@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gmsflutter/entity/production_entities/production_order.dart';
 import 'package:intl/intl.dart';
-import 'package:gmsflutter/entity/production_part/production_order.dart';
 import 'package:gmsflutter/service/production_service/production_order_service.dart';
 
 class ViewProductionOrder extends StatefulWidget {

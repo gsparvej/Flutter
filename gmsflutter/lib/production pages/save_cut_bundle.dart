@@ -1,7 +1,7 @@
 import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
-import 'package:gmsflutter/entity/production_part/cut_bundle.dart';
-import 'package:gmsflutter/entity/production_part/cutting_plan.dart';
+import 'package:gmsflutter/entity/production_entities/cut_bundle.dart';
+import 'package:gmsflutter/entity/production_entities/cutting_plan.dart';
 import 'package:gmsflutter/service/production_service/cut_bundle_service.dart';
 
 

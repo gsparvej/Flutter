@@ -1,5 +1,5 @@
 import 'package:gmsflutter/entity/merchandiser_part/order.dart';
-import 'package:gmsflutter/entity/production_part/production_order.dart';
+import 'package:gmsflutter/entity/production_entities/production_order.dart';
 
 class DayWiseProduction {
   int? id;

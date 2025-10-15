@@ -1,7 +1,7 @@
 
 import 'dart:convert';
-import 'package:gmsflutter/entity/production_part/cut_bundle.dart';
-import 'package:gmsflutter/entity/production_part/cutting_plan.dart';
+import 'package:gmsflutter/entity/production_entities/cut_bundle.dart';
+import 'package:gmsflutter/entity/production_entities/cutting_plan.dart';
 import 'package:gmsflutter/service/auth_service.dart';
 import 'package:http/http.dart' as http;
 

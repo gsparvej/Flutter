@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:gmsflutter/entity/production_part/production_summary.dart';
+import 'package:gmsflutter/entity/production_entities/production_summary.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 

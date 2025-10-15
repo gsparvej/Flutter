@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gmsflutter/entity/production_part/production_summary.dart';
+import 'package:gmsflutter/entity/production_entities/production_summary.dart';
 import 'package:gmsflutter/service/production_service/production_summary_service.dart';
 
 class AllSummaryPage extends StatefulWidget {

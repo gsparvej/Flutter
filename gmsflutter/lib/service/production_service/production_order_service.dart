@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-import 'package:gmsflutter/entity/production_part/production_order.dart';
+import 'package:gmsflutter/entity/production_entities/production_order.dart';
 import 'package:gmsflutter/service/auth_service.dart';
 import 'package:http/http.dart' as http;
 

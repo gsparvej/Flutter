@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
+import 'package:gmsflutter/production%20pages/line_view_and_save.dart';
+import 'package:gmsflutter/production%20pages/machine_view_and_save.dart';
 import 'package:gmsflutter/production%20pages/production_summary.dart';
 import 'package:gmsflutter/production%20pages/save_cut_bundle.dart';
 import 'package:gmsflutter/production%20pages/view_cut_bundle.dart';
@@ -96,12 +98,21 @@ class ProductionManagerProfile extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Line List'),
-              onTap: () async {},
+              onTap: () async {
+                Navigator.push(
+                  context,
+                MaterialPageRoute(builder: (context) => LinePage())
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Machine List'),
-              onTap: () async {},
+              onTap: () async {
+                Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MachinePage())
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.person),
