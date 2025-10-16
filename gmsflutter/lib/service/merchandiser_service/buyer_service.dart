@@ -19,7 +19,7 @@ class BuyerService{
       },
     );
 
-    // 3️⃣ Handle response
+    // Handle response
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => Buyer.fromJson(json)).toList();
@@ -27,6 +27,22 @@ class BuyerService{
       throw Exception('Unauthorized: Invalid or expired token');
     } else {
       throw Exception('Failed to load Buyers (${response.statusCode})');
+    }
+  }
+  
+  Future<bool> addBuyer (Buyer buyer) async{
+    String? token = await AuthService().getToken();
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {'Content-Type' : 'application/json'},
+      body: jsonEncode(buyer.toJson())
+    );
+    if(response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    }
+    else {
+      print('Error: ${response.statusCode} ${response.body}');
+      return false;
     }
   }
 }
