@@ -1,113 +1,52 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService{
+class AuthService {
   final String baseUrl = "http://localhost:8080";
 
   Future<bool> login(String email, String password) async {
     final url = Uri.parse('$baseUrl/api/auth/login');
     final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({'email': email, 'password' : password});
+    final body = jsonEncode({'email': email, 'password': password});
     final response = await http.post(url, headers: headers, body: body);
 
-    if(response.statusCode == 200 || response.statusCode == 201 ) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
       String token = data['token'];
 
-      Map<String , dynamic> payload = Jwt.parseJwt(token);
-      String role = payload['role'];
+      // Parse user info from JWT
+      Map<String, dynamic> payload = Jwt.parseJwt(token);
+
+      String role = payload['role'] ?? 'unknown';
+      String name = payload['name'] ?? 'Unknown';
+      String userEmail = payload['email'] ?? 'N/A';
+      String photo = payload['photo'] ?? ''; // optional
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('authToken', token);
       await prefs.setString('userRole', role);
+      await prefs.setString('userName', name);
+      await prefs.setString('userEmail', userEmail);
+      await prefs.setString('userPhoto', photo);
 
       return true;
-
-    }
-    else {
-      print('Failed to log in : ${response.body}');
+    } else {
+      print('Failed to log in: ${response.body}');
       return false;
     }
   }
 
-  Future<bool> registerAdminWeb({
-    required Map<String , dynamic> user,
-    required Map<String , dynamic> admin,
-    File? photoFile,
-    Uint8List? photoBytes,
-  }) async {
-    var request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl/api/admin/reg')
-    );
-    request.fields['user'] = jsonEncode(user);
-    request.fields['admin'] = jsonEncode(admin);
-
-
-    // If photoBytes is available (e.g., from web image picker)
-    if( photoBytes != null){
-      request.files.add(http.MultipartFile.fromBytes(
-          'photo',
-          photoBytes,
-          filename: 'profile.png'
-      ));
-    }
-    // If photoFile is provided (mobile/desktop), attach it
-    else if(photoFile != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-          'photo',
-          photoFile.path
-      ));
-    }
-
-    var response = await request.send();
-    return response.statusCode == 200;
-
-  }
-
-
-
-
-  Future<bool> registerMerchandiserManagerWeb({
-    required Map<String , dynamic> user,
-    required Map<String , dynamic> merchandiser,
-    File? photoFile,
-    Uint8List? photoBytes,
-  }) async {
-    var request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl/api/merchan_manager/reg')
-    );
-    request.fields['user'] = jsonEncode(user);
-    request.fields['merchandiser'] = jsonEncode(merchandiser);
-
-
-    // If photoBytes is available (e.g., from web image picker)
-    if( photoBytes != null){
-      request.files.add(http.MultipartFile.fromBytes(
-          'photo',
-          photoBytes,
-          filename: 'profile.png'
-      ));
-    }
-    // If photoFile is provided (mobile/desktop), attach it
-    else if(photoFile != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-          'photo',
-          photoFile.path
-      ));
-    }
-
-    var response = await request.send();
-    return response.statusCode == 200;
-
+  Future<Map<String, String>> getUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'name': prefs.getString('userName') ?? 'Unknown',
+      'email': prefs.getString('userEmail') ?? 'Not Provided',
+      'photo': prefs.getString('userPhoto') ?? '',
+    };
   }
 
   Future<String?> getUserRole() async {
@@ -123,8 +62,8 @@ class AuthService{
 
   Future<bool> isTokenExpired() async {
     String? token = await getToken();
-    if(token != null) {
-      DateTime expiryDate = Jwt.getExpiryDate(token)! ;
+    if (token != null) {
+      DateTime expiryDate = Jwt.getExpiryDate(token)!;
       return DateTime.now().isAfter(expiryDate);
     }
     return true;
@@ -132,19 +71,17 @@ class AuthService{
 
   Future<bool> isLoggedIn() async {
     String? token = await getToken();
-    if(token != null && !(await isTokenExpired())) {
+    if (token != null && !(await isTokenExpired())) {
       return true;
     } else {
       await logout();
       return false;
     }
-
   }
 
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('authToken');
-    await prefs.remove('userRole');
+    await prefs.clear();
   }
 
   Future<bool> hasRole(List<String> roles) async {

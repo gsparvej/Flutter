@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
 import 'package:gmsflutter/merchandiser%20page/view_bom_style.dart';
@@ -9,56 +7,48 @@ import 'package:gmsflutter/merchandiser%20page/view_raw_materials_check.dart';
 import 'package:gmsflutter/merchandiser%20page/view_uom.dart';
 import 'package:gmsflutter/service/auth_service.dart';
 
-
 class MerchandiserProfile extends StatelessWidget {
   final Map<String, dynamic> profile;
   final AuthService _authService = AuthService();
-  // final BuyerService buyerService = BuyerService();
 
   MerchandiserProfile({Key? key, required this.profile}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // ----------------------------
-    // BASE URL for loading images
-    // ----------------------------
     final String baseUrl =
         "http://localhost:8080/images/roleMerchandiserManager/";
     final String? photoName = profile['photo'];
-    final String? photoUrl = (photoName != null && photoName.isNotEmpty)
-        ? "$baseUrl$photoName"
-        : null;
+    final String? photoUrl =
+    (photoName != null && photoName.isNotEmpty) ? "$baseUrl$photoName" : null;
 
-    // ----------------------------
-    // SCAFFOLD: Main screen layout
-    // ----------------------------
+    final String name = profile['name'] ?? 'Unknown';
+    final String email = profile['email'] ?? 'Not Provided';
 
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text(
           'Merchandiser Profile',
-          style: TextStyle(color: Colors.orangeAccent),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.black12,
+        backgroundColor: Colors.deepPurple,
         centerTitle: true,
-        elevation: 4,
+        elevation: 3,
       ),
-
-      // ----------------------------
-      // DRAWER: Side navigation menu
-      // ----------------------------
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            // 🟣 Drawer Header with user info
             UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(color: Colors.deepPurpleAccent),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.deepPurple, Colors.deepPurpleAccent],
+                ),
+              ),
               accountName: Text(
-                profile['name'] ?? 'Unknown User',
+                name,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              accountEmail: Text(profile['user']?['email'] ?? 'N/A'),
+              accountEmail: Text(email),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: (photoUrl != null)
                     ? NetworkImage(photoUrl)
@@ -66,135 +56,138 @@ class MerchandiserProfile extends StatelessWidget {
                 as ImageProvider,
               ),
             ),
-            // 🟣 Menu Items (you can add more later)
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Add Buyer'),
-              onTap: () async{
-                Navigator.pop(context);
-              },
-            ),
-
-            const Divider(),
-
-
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Buyer'),
-              onTap: () async{
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewBuyer(),
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildDrawerItem(
+                      icon: Icons.person_add,
+                      text: "Add Buyer",
+                      onTap: () {
+                        Navigator.pop(context);
+                        // Add your navigation logic for "Add Buyer"
+                      }),
+                  const Divider(),
+                  _buildDrawerItem(
+                      icon: Icons.person,
+                      text: "View Buyer",
+                      onTap: () => _navigate(context, ViewBuyer())),
+                  _buildDrawerItem(
+                      icon: Icons.accessibility_new,
+                      text: "View UOM",
+                      onTap: () => _navigate(context, ViewUom())),
+                  _buildDrawerItem(
+                      icon: Icons.style,
+                      text: "View BOM Style",
+                      onTap: () => _navigate(context, ViewBomStyle())),
+                  _buildDrawerItem(
+                      icon: Icons.list_alt,
+                      text: "View Half Order",
+                      onTap: () => _navigate(context, ViewHalfOrder())),
+                  _buildDrawerItem(
+                      icon: Icons.check_circle_outline,
+                      text: "Raw Materials Check",
+                      onTap: () => _navigate(context, ViewRawMaterialsCheck())),
+                  const Divider(),
+                  _buildDrawerItem(
+                    icon: Icons.logout,
+                    text: "Logout",
+                    iconColor: Colors.redAccent,
+                    textColor: Colors.redAccent,
+                    onTap: () async {
+                      await _authService.logout();
+                      Navigator.pushReplacement(
+                          context, MaterialPageRoute(builder: (_) =>  Login()));
+                    },
                   ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View UOM'),
-              onTap: () async{
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewUom(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View BOM Style'),
-              onTap: () async{
-                Navigator.push(
-                  context,
-                MaterialPageRoute(builder: (context) => ViewBomStyle()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Half Order'),
-              onTap: () async{
-                Navigator.push(
-                  context, 
-                MaterialPageRoute(builder: (context) => ViewHalfOrder()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Raw Materials Check'),
-              onTap: () async{
-                Navigator.push(
-                  context, 
-                MaterialPageRoute(builder: (context) => ViewRawMaterialsCheck())
-                );
-              },
-            ),
-
-
-            const Divider(),
-
-            // 🔴 Logout Option
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.deepOrange),
-              title: const Text(
-                  'Logout',
-                  style: TextStyle(color: Colors.deepOrange)
+                ],
               ),
-              onTap: () async {
-                await _authService.logout();
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => Login()),
-                );
-              },
-
-
             ),
-
-
-
           ],
         ),
       ),
-
-      // ----------------------------
-      // BODY: Main content area
-      // ----------------------------
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                border: Border.all(color: Colors.deepPurple, width: 4),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8,
-                    offset: Offset(0, 5),
+                    color: Colors.deepPurple.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
                 ],
-                border: Border.all(
-                  color: Colors.green,
-                  width: 3,
-                ),
               ),
               child: CircleAvatar(
-                radius: 60, // image size
+                radius: 60,
                 backgroundColor: Colors.grey[200],
                 backgroundImage: (photoUrl != null)
-                    ? NetworkImage(photoUrl) // from backend
+                    ? NetworkImage(photoUrl)
                     : const AssetImage('assets/default_avatar.png')
                 as ImageProvider,
               ),
             ),
-            SizedBox(height: 20),
-
+            const SizedBox(height: 20),
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.person, color: Colors.deepPurple),
+                      title: Text(
+                        name,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.email, color: Colors.deepPurple),
+                      title: Text(
+                        email,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildDrawerItem({
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+    Color? iconColor,
+    Color? textColor,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor ?? Colors.deepPurple),
+      title: Text(
+        text,
+        style: TextStyle(
+          color: textColor ?? Colors.black,
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
+
+  void _navigate(BuildContext context, Widget page) {
+    Navigator.pop(context); // Close the drawer
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 }

@@ -14,173 +14,114 @@ class ProductionManagerProfile extends StatelessWidget {
   final Map<String, dynamic> profile;
   final AuthService _authService = AuthService();
 
-  // final BuyerService buyerService = BuyerService();
-
   ProductionManagerProfile({Key? key, required this.profile}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // ----------------------------
-    // BASE URL for loading images
-    // ----------------------------
-    final String baseUrl =
-        "http://localhost:8080/images/roleProductionManager/";
+    final String baseUrl = "http://localhost:8080/images/roleProductionManager/";
     final String? photoName = profile['photo'];
-    final String? photoUrl = (photoName != null && photoName.isNotEmpty)
-        ? "$baseUrl$photoName"
-        : null;
+    final String? photoUrl = (photoName != null && photoName.isNotEmpty) ? "$baseUrl$photoName" : null;
 
-    // ----------------------------
-    // SCAFFOLD: Main screen layout
-    // ----------------------------
+    final String name = profile['name'] ?? 'Unknown User';
+    final String email = profile['email'] ?? 'Not Provided';
 
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text(
           'Production Manager Profile',
-          style: TextStyle(color: Colors.orangeAccent),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.black12,
+        backgroundColor: Colors.deepPurple,
         centerTitle: true,
-        elevation: 4,
+        elevation: 3,
       ),
 
-      // ----------------------------
-      // DRAWER: Side navigation menu
-      // ----------------------------
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            // 🟣 Drawer Header with user info
             UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(color: Colors.deepPurpleAccent),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.deepPurple, Colors.deepPurpleAccent],
+                ),
+              ),
               accountName: Text(
-                profile['name'] ?? 'Unknown User',
+                name,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              accountEmail: Text(profile['user']?['email'] ?? 'N/A'),
+              accountEmail: Text(email),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: (photoUrl != null)
                     ? NetworkImage(photoUrl)
-                    : const AssetImage('assets/default_avatar.jpg')
-                          as ImageProvider,
+                    : const AssetImage('assets/default_avatar.jpg') as ImageProvider,
               ),
             ),
-
-            // 🟣 Menu Items (you can add more later)
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Add Cut Bundle'),
-              onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SaveCutBundle()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Production Summary'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const AllSummaryPage(), // ✅ No orderId passed
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildDrawerItem(
+                    icon: Icons.save,
+                    text: 'Add Cut Bundle',
+                    onTap: () => _navigate(context, SaveCutBundle()),
                   ),
-                );
-              },
-            ),
-
-            const Divider(),
-
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Line List'),
-              onTap: () async {
-                Navigator.push(
-                  context,
-                MaterialPageRoute(builder: (context) => LinePage())
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Machine List'),
-              onTap: () async {
-                Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MachinePage())
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Production Orders'),
-              onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewProductionOrder(),
+                  _buildDrawerItem(
+                    icon: Icons.analytics,
+                    text: 'Production Summary',
+                    onTap: () => _navigate(context, const AllSummaryPage()),
                   ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Day Wise Production'),
-              onTap: () async {
-                Navigator.push(
-                    context,
-                MaterialPageRoute(
-                    builder: (context) => ViewDayWiseProduction())
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Cutting Plans'),
-              onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewCuttingPlan()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('View Cut Bundle'),
-              onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewCutBundle()),
-                );
-              },
-            ),
-            const Divider(),
-
-            // 🔴 Logout Option
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.deepOrange),
-              title: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.deepOrange),
+                  const Divider(),
+                  _buildDrawerItem(
+                    icon: Icons.view_list,
+                    text: 'Line List',
+                    onTap: () => _navigate(context, LinePage()),
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.memory,
+                    text: 'Machine List',
+                    onTap: () => _navigate(context, MachinePage()),
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.production_quantity_limits,
+                    text: 'View Production Orders',
+                    onTap: () => _navigate(context, ViewProductionOrder()),
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.date_range,
+                    text: 'View Day Wise Production',
+                    onTap: () => _navigate(context, ViewDayWiseProduction()),
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.content_cut,
+                    text: 'View Cutting Plans',
+                    onTap: () => _navigate(context, ViewCuttingPlan()),
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.inventory,
+                    text: 'View Cut Bundle',
+                    onTap: () => _navigate(context, ViewCutBundle()),
+                  ),
+                  const Divider(),
+                  _buildDrawerItem(
+                    icon: Icons.logout,
+                    iconColor: Colors.redAccent,
+                    text: 'Logout',
+                    textColor: Colors.redAccent,
+                    onTap: () async {
+                      await _authService.logout();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => Login()),
+                      );
+                    },
+                  ),
+                ],
               ),
-              onTap: () async {
-                await _authService.logout();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => Login()),
-                );
-              },
-            ),
+            )
           ],
         ),
       ),
 
-      // ----------------------------
-      // BODY: Main content area
-      // ----------------------------
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -189,28 +130,80 @@ class ProductionManagerProfile extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                border: Border.all(color: Colors.deepPurple, width: 3),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
+                    color: Colors.deepPurple.withOpacity(0.3),
                     blurRadius: 8,
-                    offset: Offset(0, 5),
+                    offset: const Offset(0, 4),
                   ),
                 ],
-                border: Border.all(color: Colors.green, width: 3),
               ),
               child: CircleAvatar(
-                radius: 60, // image size
+                radius: 60,
                 backgroundColor: Colors.grey[200],
                 backgroundImage: (photoUrl != null)
-                    ? NetworkImage(photoUrl) // from backend
-                    : const AssetImage('assets/default_avatar.png')
-                          as ImageProvider,
+                    ? NetworkImage(photoUrl)
+                    : const AssetImage('assets/default_avatar.png') as ImageProvider,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.person, color: Colors.deepPurple),
+                      title: Text(
+                        name,
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.email, color: Colors.deepPurple),
+                      title: Text(
+                        email,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildDrawerItem({
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+    Color? iconColor,
+    Color? textColor,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor ?? Colors.deepPurple),
+      title: Text(
+        text,
+        style: TextStyle(
+          color: textColor ?? Colors.black,
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
+
+  void _navigate(BuildContext context, Widget page) {
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (_) => page));
   }
 }
