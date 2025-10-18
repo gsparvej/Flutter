@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gmsflutter/entity/production_entities/machine.dart';
 import 'package:gmsflutter/service/production_service/machine_service.dart';
 
+// Styling constants for consistency (Mirrors LinePage)
+const Color _primaryColor = Colors.deepPurple;
+const Color _accentColor = Colors.orangeAccent;
+const Color _successColor = Colors.green;
+const Color _errorColor = Colors.red;
+
 class MachinePage extends StatefulWidget {
   const MachinePage({Key? key}) : super(key: key);
 
@@ -12,14 +18,19 @@ class MachinePage extends StatefulWidget {
 class _MachinePageState extends State<MachinePage> {
   final _formKey = GlobalKey<FormState>();
 
+  // Controllers
   final TextEditingController _machineCodeController = TextEditingController();
 
+  // Service
   final MachineService _machineService = MachineService();
 
+  // State
   List<Machine> _machines = [];
   bool _isLoading = false;
+  String? _selectedStatus; // Null by default
 
-  String? _selectedStatus;
+  // List of available statuses
+  static const List<String> _statuses = ['ACTIVE', 'INACTIVE', 'REPAIR'];
 
   @override
   void initState() {
@@ -27,17 +38,32 @@ class _MachinePageState extends State<MachinePage> {
     _fetchMachines();
   }
 
+  // Dispose controllers to prevent memory leaks
+  @override
+  void dispose() {
+    _machineCodeController.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchMachines() async {
-    setState(() => _isLoading = true);
+    if (mounted) {
+      setState(() => _isLoading = true);
+    }
     try {
       final machines = await _machineService.fetchMachine();
-      setState(() => _machines = machines);
+      if (mounted) {
+        setState(() => _machines = machines);
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading machines: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading machines: $e'), backgroundColor: _errorColor),
+        );
+      }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -45,92 +71,184 @@ class _MachinePageState extends State<MachinePage> {
     if (!_formKey.currentState!.validate()) return;
 
     final machine = Machine(
-      machineCode: _machineCodeController.text,
+      machineCode: _machineCodeController.text.trim(),
       status: _selectedStatus,
     );
 
     bool success = await _machineService.addMachine(machine);
 
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Machine saved successfully')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Machine saved successfully'), backgroundColor: _successColor),
+        );
+      }
       _machineCodeController.clear();
-      setState(() {
-        _selectedStatus = null;
-      });
+      if (mounted) {
+        setState(() {
+          _selectedStatus = null; // Clear selected status
+        });
+      }
       _fetchMachines(); // Refresh list
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to save machine')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to save machine'), backgroundColor: _errorColor),
+        );
+      }
     }
   }
+
+  // Helper function for consistent InputDecoration styling
+  InputDecoration _buildInputDecoration(String labelText) {
+    return InputDecoration(
+      labelText: labelText,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: _primaryColor, width: 2),
+      ),
+    );
+  }
+
+  // Helper to determine status color
+  Color _getStatusColor(String status) {
+    switch (status.toUpperCase()) {
+      case 'ACTIVE':
+        return _successColor;
+      case 'REPAIR':
+        return _accentColor;
+      case 'INACTIVE':
+        return _errorColor;
+      default:
+        return Colors.grey;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Machine Management')),
+      appBar: AppBar(
+        title: const Text('Machine Management'),
+        backgroundColor: _primaryColor,
+        foregroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Form to add machine
+            // --- Form to Add Machine (Wrapped in Card for style) ---
             Form(
               key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _machineCodeController,
-                    decoration: const InputDecoration(labelText: 'Machine Code'),
-                    validator: (value) =>
-                    value == null || value.isEmpty ? 'Enter machine code' : null,
-                  ),
-                  const SizedBox(height: 12),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Add New Production Machine',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: _primaryColor),
+                      ),
+                      const SizedBox(height: 15),
 
-                  // Dropdown for status
-                  DropdownButtonFormField<String>(
-                    value: _selectedStatus,
-                    decoration: const InputDecoration(labelText: 'Status'),
-                    items: const [
-                      DropdownMenuItem(value: '', child: Text('-- Select Status --')),
-                      DropdownMenuItem(value: 'ACTIVE', child: Text('ACTIVE')),
-                      DropdownMenuItem(value: 'INACTIVE', child: Text('INACTIVE')),
-                      DropdownMenuItem(value: 'REPAIR', child: Text('REPAIR')),
+                      // Machine Code Field
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: TextFormField(
+                          controller: _machineCodeController,
+                          decoration: _buildInputDecoration('Machine Code (e.g., M-CNC-01)'),
+                          validator: (value) =>
+                          value == null || value.isEmpty ? 'Please enter the machine code' : null,
+                        ),
+                      ),
+
+                      // Status Dropdown
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: DropdownButtonFormField<String>(
+                          value: _selectedStatus,
+                          decoration: _buildInputDecoration('Status'),
+                          items: _statuses.map((String status) {
+                            return DropdownMenuItem<String>(
+                              value: status,
+                              child: Text(status),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              _selectedStatus = value;
+                            });
+                          },
+                          validator: (value) =>
+                          value == null || value.isEmpty ? 'Please select a status' : null,
+                        ),
+                      ),
+
+                      // Save Button
+                      ElevatedButton(
+                        onPressed: _saveMachine,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _accentColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          elevation: 3,
+                        ),
+                        child: const Text('Save Machine', style: TextStyle(fontSize: 16)),
+                      ),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedStatus = value;
-                      });
-                    },
-                    validator: (value) =>
-                    value == null || value.isEmpty ? 'Please select a status' : null,
                   ),
-                  const SizedBox(height: 20),
-
-                  ElevatedButton(
-                    onPressed: _saveMachine,
-                    child: const Text('Save Machine'),
-                  ),
-                ],
+                ),
               ),
             ),
 
-            const Divider(height: 40),
+            const Divider(height: 40, thickness: 1),
 
-            // Machine list
+            // --- Machine List Header ---
+            const Text(
+              'Existing Production Machines',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+            ),
+            const SizedBox(height: 10),
+
+            // --- Machine List ---
             _isLoading
-                ? const CircularProgressIndicator()
+                ? const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: CircularProgressIndicator(color: _primaryColor),
+            )
                 : Expanded(
               child: _machines.isEmpty
-                  ? const Text('No machines found.')
+                  ? const Center(child: Text('No machines found. Add one above.'))
                   : ListView.builder(
                 itemCount: _machines.length,
                 itemBuilder: (context, index) {
                   final machine = _machines[index];
-                  return ListTile(
-                    title: Text(machine.machineCode ?? ''),
-                    subtitle: Text('Status: ${machine.status ?? 'Unknown'}'),
+                  final statusText = machine.status ?? 'Unknown';
+                  final statusColor = _getStatusColor(statusText);
+
+                  return Card(
+                    elevation: 1,
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      leading: Icon(Icons.miscellaneous_services, color: statusColor),
+                      title: Text(machine.machineCode ?? 'N/A', style: const TextStyle(fontWeight: FontWeight.w600)),
+                      trailing: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: statusColor.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: statusColor, width: 1),
+                        ),
+                        child: Text(
+                          statusText,
+                          style: TextStyle(color: statusColor, fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),

@@ -33,18 +33,32 @@ class VendorDetailsPage extends StatelessWidget {
                   child: Text(
                     displayValue(vendor.companyName),
                     style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
                       color: Colors.deepPurple,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const Divider(height: 30, thickness: 1.5, color: Colors.grey),
+
+                // Details Rows
                 buildRow("Vendor Name", displayValue(vendor.companyName)),
                 buildRow("Contact Person", displayValue(vendor.contactPerson)),
                 buildRow("Email", displayValue(vendor.email)),
                 buildRow("Phone", displayValue(vendor.phone)),
                 buildRow("Address", displayValue(vendor.address)),
+
+                const SizedBox(height: 20),
+                const Text(
+                  "Registration Numbers:",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const Divider(height: 10, thickness: 0.5),
+
                 buildRow("TIN", displayValue(vendor.tin)),
                 buildRow("BIN", displayValue(vendor.bin)),
                 buildRow("VAT", displayValue(vendor.vat)),
@@ -66,12 +80,15 @@ class VendorDetailsPage extends StatelessWidget {
             flex: 3,
             child: Text(
               "$label:",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
             ),
           ),
           Expanded(
             flex: 5,
-            child: Text(value),
+            child: Text(
+              value,
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
           ),
         ],
       ),
