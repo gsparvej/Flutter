@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 10),
               Text(
-                'GMS System',
+                'GMS',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,
