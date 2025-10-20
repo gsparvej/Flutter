@@ -53,19 +53,6 @@ class AdminProfile extends StatelessWidget {
                           as ImageProvider,
               ),
             ),
-
-            _buildDrawerItem(
-              context,
-              icon: Icons.person_add,
-              text: 'Add Buyer',
-              onTap: () {
-                Navigator.pop(context);
-                // Add navigation or functionality here if needed
-              },
-            ),
-
-            const Divider(),
-
             _buildDrawerItem(
               context,
               icon: Icons.group,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/entity/merchandiser_part/order.dart';
-import 'package:gmsflutter/merchandiser%20page/view_full_order.dart';
+import 'package:gmsflutter/merchandiser page/view_full_order.dart';
 import 'package:gmsflutter/service/merchandiser_service/order_service.dart';
 import 'package:intl/intl.dart';
 
@@ -25,13 +25,36 @@ class ViewHalfOrder extends StatefulWidget {
 class _ViewHalfOrderState extends State<ViewHalfOrder> {
   late Future<List<Order>> _orderListFuture;
 
+  final TextEditingController _searchController = TextEditingController();
+  List<Order> _allOrders = [];
+  List<Order> _filteredOrders = [];
+
   @override
   void initState() {
     super.initState();
     _orderListFuture = OrderService().fetchAllOrders();
+    _orderListFuture.then((orders) {
+      setState(() {
+        _allOrders = orders;
+        _filteredOrders = orders;
+      });
+    });
   }
 
-  // Smart Navigation Handler
+  void _filterOrders(String query) {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) {
+      setState(() => _filteredOrders = _allOrders);
+    } else {
+      setState(() {
+        _filteredOrders = _allOrders.where((order) {
+          final id = order.id?.toString() ?? '';
+          return id.contains(trimmed);
+        }).toList();
+      });
+    }
+  }
+
   void _viewFullOrder(BuildContext context, int? orderId) async {
     if (orderId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +85,6 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
     if (dateStr == null || dateStr.trim().isEmpty) return "N/A";
     try {
       final date = DateTime.parse(dateStr).toLocal();
-      // Gorgeous Date Format: 15 OCT 2025
       final formatter = DateFormat('dd MMM yyyy').add_jm();
       return formatter.format(date);
     } catch (e) {
@@ -70,7 +92,6 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
     }
   }
 
-  // Helper method to build a detail row
   Widget _buildDetailRow({required String label, required String value, Color? valueColor}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -102,14 +123,12 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
     );
   }
 
-  // --- Widget Builders ---
   Widget _buildOrderCard(BuildContext context, Order order) {
     final orderId = order.id?.toString() ?? 'N/A';
     final buyerName = order.buyer?.name ?? 'Unknown Buyer';
     final styleCode = order.bomStyle?.styleCode ?? 'N/A';
     final deliveryDate = formatLocalDate(order.deliveryDate);
 
-    // Determine color based on urgency (e.g., if delivery date is near)
     Color dateColor = OrderPalette.secondaryText;
     try {
       final date = DateTime.parse(order.deliveryDate!).toLocal();
@@ -120,7 +139,7 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      elevation: 8, // Fabulous elevation
+      elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
         side: BorderSide(color: OrderPalette.primary.withOpacity(0.3), width: 1.5),
@@ -130,7 +149,6 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header: Order ID (Colorful & Gorgeous)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -149,33 +167,14 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
                     ),
                   ),
                 ),
-                // Icon for visual context
                 const Icon(Icons.shopping_cart_checkout, color: OrderPalette.primary, size: 24),
               ],
             ),
-
             const Divider(height: 20, thickness: 1.5),
-
-            // Details Section
-            _buildDetailRow(
-              label: 'Buyer Org',
-              value: buyerName,
-              valueColor: OrderPalette.primaryText,
-            ),
-            _buildDetailRow(
-              label: 'Style Code',
-              value: styleCode,
-              valueColor: OrderPalette.primaryText,
-            ),
-            _buildDetailRow(
-              label: 'Delivery Date',
-              value: deliveryDate,
-              valueColor: dateColor,
-            ),
-
+            _buildDetailRow(label: 'Buyer Org', value: buyerName),
+            _buildDetailRow(label: 'Style Code', value: styleCode),
+            _buildDetailRow(label: 'Delivery Date', value: deliveryDate, valueColor: dateColor),
             const SizedBox(height: 15),
-
-            // Action Button (Smart & Prominent)
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -202,8 +201,6 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
     );
   }
 
-  // --- Main Build Method ---
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,7 +217,6 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
           IconButton(
             icon: const Icon(Icons.add_shopping_cart),
             onPressed: () {
-              // TODO: Implement Add Order functionality
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Opening Add Order Form')),
               );
@@ -229,55 +225,77 @@ class _ViewHalfOrderState extends State<ViewHalfOrder> {
           )
         ],
       ),
-      body: FutureBuilder<List<Order>>(
-        future: _orderListFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: OrderPalette.primary),
-            );
-          } else if (snapshot.hasError) {
-            // Fabulous Error State
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, color: OrderPalette.deliveryDate, size: 50),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Failed to load orders. Check service connection.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: OrderPalette.deliveryDate, fontSize: 16),
-                    ),
-                  ],
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search by Order ID...',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
               ),
-            );
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            // Smart Empty State
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.inventory_2_outlined, color: OrderPalette.secondaryText, size: 50),
-                  SizedBox(height: 10),
-                  Text('No open orders found.', style: TextStyle(fontSize: 18, color: OrderPalette.secondaryText)),
-                ],
-              ),
-            );
-          } else {
-            final orders = snapshot.data!;
-            return ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              itemCount: orders.length,
-              itemBuilder: (context, index) {
-                return _buildOrderCard(context, orders[index]);
+              onChanged: _filterOrders,
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<Order>>(
+              future: _orderListFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(color: OrderPalette.primary),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline, color: OrderPalette.deliveryDate, size: 50),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Failed to load orders. Check service connection.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: OrderPalette.deliveryDate, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  if (_filteredOrders.isEmpty) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.inventory_2_outlined, color: OrderPalette.secondaryText, size: 50),
+                          SizedBox(height: 10),
+                          Text('No orders matching your search.', style: TextStyle(fontSize: 18, color: OrderPalette.secondaryText)),
+                        ],
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    itemCount: _filteredOrders.length,
+                    itemBuilder: (context, index) {
+                      return _buildOrderCard(context, _filteredOrders[index]);
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }

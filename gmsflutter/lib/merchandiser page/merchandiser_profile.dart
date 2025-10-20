@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
+import 'package:gmsflutter/merchandiser%20page/save_buyer.dart';
 import 'package:gmsflutter/merchandiser%20page/view_bom_style.dart';
 import 'package:gmsflutter/merchandiser%20page/view_buyer.dart';
 import 'package:gmsflutter/merchandiser%20page/view_half_order.dart';
@@ -63,7 +64,9 @@ class MerchandiserProfile extends StatelessWidget {
                       icon: Icons.person_add,
                       text: "Add Buyer",
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                            context, 
+                        MaterialPageRoute(builder: (context) => SaveBuyer()));
                         // Add your navigation logic for "Add Buyer"
                       }),
                   const Divider(),

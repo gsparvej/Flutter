@@ -73,6 +73,16 @@ class _LoginState extends State<Login> {
                   color: primaryColor,
                 ),
               ),
+              SizedBox(height: 10),
+              Text(
+                'GMS System',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepOrangeAccent,
+                ),
+              ),
               SizedBox(height: 8),
               Text(
                 'Sign in to continue to your dashboard',

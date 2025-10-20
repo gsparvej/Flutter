@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 class BuyerService{
   final String baseUrl = "http://localhost:8080/api/buyer";
 
+
   Future<List<Buyer>> fetchBuyers() async {
     // 1️⃣ Get token from AuthService
     String? token = await AuthService().getToken();

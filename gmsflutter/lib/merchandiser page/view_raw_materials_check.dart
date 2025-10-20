@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gmsflutter/entity/merchandiser_part/raw_materials_check.dart';
 import 'package:gmsflutter/service/merchandiser_service/raw_materials_check_service.dart';
 
-// --- Color and Style Palette (Forest Green & Gold) ---
 class RawMaterialPalette {
-  static const Color primary = Color(0xFF1B5E20); // Deep Forest Green - Trustworthy
-  static const Color accent = Color(0xFFFFC107); // Gold/Amber - Highlight
-  // FIX: Defined secondary as a valid Color constant (Deep Bronze)
+  static const Color primary = Color(0xFF1B5E20);
+  static const Color accent = Color(0xFFFFC107);
   static const Color secondary = Color(0xFF795548);
-  static const Color background = Color(0xFFE8F5E9); // Light Green Background
+  static const Color background = Color(0xFFE8F5E9);
   static const Color primaryText = Color(0xFF212121);
   static const Color secondaryText = Color(0xFF757575);
-  static const Color totalMetric = Color(0xFFD84315); // Deep Orange - Total Importance
+  static const Color totalMetric = Color(0xFFD84315);
 }
 
 class ViewRawMaterialsCheck extends StatefulWidget {
@@ -23,25 +21,49 @@ class ViewRawMaterialsCheck extends StatefulWidget {
 
 class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
   late Future<List<RawMaterialsCheck>> _rawMaterialsCheckListFuture;
+  List<RawMaterialsCheck> _allChecks = []; // 🔄 Hold all data for filtering
+  List<RawMaterialsCheck> _filteredChecks = []; // 🔄 Filtered list
+  final TextEditingController _searchController = TextEditingController(); // 🔄
 
   @override
   void initState() {
     super.initState();
-    _rawMaterialsCheckListFuture = RawMaterialsCheckService().fetchRawMaterials();
+    _fetchData(); // 🔄
   }
 
-  // Helper method to safely display quantity
-  String displayQty(int? qty) {
-    return qty?.toString() ?? 'N/A';
+  void _fetchData() {
+    _rawMaterialsCheckListFuture =
+        RawMaterialsCheckService().fetchRawMaterials();
+    _rawMaterialsCheckListFuture.then((data) {
+      setState(() {
+        _allChecks = data;
+        _filteredChecks = data; // initially same
+      });
+    });
   }
 
-  // Fabulous Size/Quantity Row Builder
+  // 🔄 Search/filter logic
+  void _filterSearch(String query) {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) {
+      setState(() => _filteredChecks = _allChecks);
+    } else {
+      setState(() {
+        _filteredChecks = _allChecks.where((check) {
+          final orderId = check.order?.id?.toString() ?? '';
+          return orderId.contains(trimmed);
+        }).toList();
+      });
+    }
+  }
+
+  String displayQty(int? qty) => qty?.toString() ?? 'N/A';
+
   Widget _buildSizeRow(String size, int? qty) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          // FIX: RawMaterialPalette.secondary is now a valid Color
           Icon(Icons.crop_square, size: 16, color: RawMaterialPalette.secondary.withOpacity(0.8)),
           const SizedBox(width: 8),
           Expanded(
@@ -71,8 +93,6 @@ class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
     );
   }
 
-  // --- Widget Builders ---
-
   Widget _buildMaterialCheckCard(BuildContext context, RawMaterialsCheck materials) {
     final rawId = materials.id?.toString() ?? 'N/A';
     final orderId = materials.order?.id?.toString() ?? 'N/A';
@@ -80,13 +100,10 @@ class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      elevation: 8, // Fabulous elevation
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: InkWell(
         onTap: () {
-          // TODO: Implement navigation to a detailed view if necessary
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Viewing Raw Materials Check for Order #$orderId')),
           );
@@ -97,7 +114,7 @@ class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header: Order ID (Colorful & Gorgeous)
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -114,17 +131,11 @@ class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
                   const Spacer(),
                   Text(
                     "Check ID: $rawId",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: RawMaterialPalette.secondaryText,
-                    ),
+                    style: const TextStyle(fontSize: 14, color: RawMaterialPalette.secondaryText),
                   ),
                 ],
               ),
-
               const Divider(height: 25, thickness: 1.5, color: RawMaterialPalette.accent),
-
-              // --- Quantity Section ---
               const Text(
                 "Required Quantity Breakdown:",
                 style: TextStyle(
@@ -134,33 +145,25 @@ class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
                 ),
               ),
               const SizedBox(height: 10),
-
-              // Smart Grid Layout for Sizes
               GridView.count(
                 crossAxisCount: 2,
                 childAspectRatio: 3.5,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  // Short Sleeve
                   _buildSizeRow("Short S", materials.shortSTotalQuantity),
                   _buildSizeRow("Short M", materials.shortMTotalQuantity),
                   _buildSizeRow("Short L", materials.shortLTotalQuantity),
                   _buildSizeRow("Short XL", materials.shortXLTotalQuantity),
-
-                  // Full Sleeve
                   _buildSizeRow("Full S", materials.fullSTotalQuantity),
                   _buildSizeRow("Full M", materials.fullMTotalQuantity),
                   _buildSizeRow("Full L", materials.fullLTotalQuantity),
                   _buildSizeRow("Full XL", materials.fullXLTotalQuantity),
                 ],
               ),
-
               const SizedBox(height: 15),
               const Divider(height: 1, thickness: 1, color: RawMaterialPalette.secondaryText),
               const SizedBox(height: 15),
-
-              // --- Total Fabric Needed (Smart & Fabulous Highlight) ---
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
@@ -198,8 +201,7 @@ class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
     );
   }
 
-  // --- Main Build Method ---
-
+  // --- Main Build ---
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,53 +216,64 @@ class _ViewRawMaterialsCheckState extends State<ViewRawMaterialsCheck> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: FutureBuilder<List<RawMaterialsCheck>>(
-        future: _rawMaterialsCheckListFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: RawMaterialPalette.primary),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.report_problem, color: RawMaterialPalette.totalMetric, size: 50),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Error fetching materials data: ${snapshot.error}",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: RawMaterialPalette.totalMetric, fontSize: 16),
-                    ),
-                  ],
+      body: Column(
+        children: [
+          // 🔄 Search Field
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search by Order ID...',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
               ),
-            );
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.no_sim, color: RawMaterialPalette.secondaryText, size: 50),
-                  SizedBox(height: 10),
-                  Text('No Raw Materials Check records found.', style: TextStyle(fontSize: 18, color: RawMaterialPalette.secondaryText)),
-                ],
-              ),
-            );
-          } else {
-            final rawList = snapshot.data!;
-            return ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              itemCount: rawList.length,
-              itemBuilder: (context, index) {
-                return _buildMaterialCheckCard(context, rawList[index]);
+              onChanged: _filterSearch,
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: FutureBuilder<List<RawMaterialsCheck>>(
+              future: _rawMaterialsCheckListFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(color: RawMaterialPalette.primary),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      "Error: ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                } else {
+                  if (_filteredChecks.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No matching records found.",
+                        style: TextStyle(fontSize: 18, color: RawMaterialPalette.secondaryText),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    itemCount: _filteredChecks.length,
+                    itemBuilder: (context, index) {
+                      return _buildMaterialCheckCard(context, _filteredChecks[index]);
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }
