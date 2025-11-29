@@ -148,7 +148,7 @@ class _SaveVendorState extends State<SaveVendor> {
         child: ListView(
           children: [
             const Text(
-              "Register a new supplier.",
+              "Register a new Vendor.",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: _primaryColor),
             ),
             const SizedBox(height: 24),
