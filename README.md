@@ -19,17 +19,17 @@ The Admin Module is designed to give administrators comprehensive control over t
 
 ## 🖼️ Module Screenshots Overview
 
-Below is a breakdown of the key screens within the Admin Module, corresponding to the provided image files:
+The paths have been updated to reflect the structure: `screenshots/admin/filename.PNG`.
 
-| Screenshot | File Name | Description |
-| :--- | :--- | :--- |
-| **Dashboard** | `admin dashboard.PNG` | The main view with a sidebar for easy navigation to all sub-modules (Profile, Departments, Attendance, Employee List, Leave, etc.). |
-| **Admin Profile** | `admin profile.PNG` | The screen for viewing or updating the administrator's personal and account information. |
-| **Departments** | `all departments.PNG` | Lists all organizational departments (e.g., Production, Marketing, Logistics). |
-| **Daily Attendance** | `attendance.PNG` | Shows records of daily employee attendance (e.g., check-in/check-out). |
-| **Designations** | `designations.PNG` | Lists all job roles or titles within the organization (e.g., Operations, Sales Promotion). |
-| **Employee List** | `employee list.PNG` | A directory of all active employees, including basic details. |
-| **Leave Report** | `leave.PNG` | Displays reports or a queue of pending/approved employee leave applications. |
+| Screenshot | File Name | Image Link | Description |
+| :--- | :--- | :--- | :--- |
+| **Dashboard** | `admin dashboard.PNG` | ![Admin Dashboard](screenshots/admin/admin%20dashboard.PNG) | The main view with a sidebar for easy navigation to all sub-modules. |
+| **Admin Profile** | `admin profile.PNG` | ![Admin Profile](screenshots/admin/admin%20profile.PNG) | The screen for viewing or updating the administrator's personal and account information. |
+| **Departments** | `all departments.PNG` | ![All Departments](screenshots/admin/all%20departments.PNG) | Lists all organizational departments (e.g., Production, Marketing). |
+| **Daily Attendance** | `attendance.PNG` | ![Daily Attendance](screenshots/admin/attendance.PNG) | Shows records of daily employee attendance (e.g., check-in/check-out). |
+| **Designations** | `designations.PNG` | ![Designations](screenshots/admin/designations.PNG) | Lists all job roles or titles within the organization. |
+| **Employee List** | `employee list.PNG` | ![Employee List](screenshots/admin/employee%20list.PNG) | A directory of all active employees, including basic details. |
+| **Leave Report** | `leave.PNG` | ![Leave Report](screenshots/admin/leave.PNG) | Displays reports or a queue of pending/approved employee leave applications. |
 
 ---
 
@@ -52,3 +52,4 @@ The Admin Module typically integrates with the following backend entities and AP
 This module is restricted to users with **Admin** privileges. Access control ensures only authorized personnel can view and modify organizational and employee data.
 
 ---
+
