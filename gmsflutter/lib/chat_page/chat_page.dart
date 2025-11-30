@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gmsflutter/entity/chat_entity/chat_message.dart';
 import 'package:gmsflutter/service/chat_service/chat_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -87,18 +88,15 @@ class _ChatPageState extends State<ChatPage> {
                 final isMe = msg.sender == currentUserRole;
 
                 return Align(
-                  alignment: isMe
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
+                  alignment:
+                  isMe ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
                     padding: const EdgeInsets.all(10),
-                    margin:
-                    const EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(
                       color: isMe ? Colors.blue : Colors.white,
                       borderRadius: BorderRadius.circular(12),
-                      border:
-                      Border.all(color: Colors.grey.shade300),
+                      border: Border.all(color: Colors.grey.shade300),
                     ),
                     constraints: const BoxConstraints(maxWidth: 250),
                     child: Column(
@@ -107,9 +105,7 @@ class _ChatPageState extends State<ChatPage> {
                         Text(
                           msg.sender, // role shown
                           style: TextStyle(
-                            color: isMe
-                                ? Colors.white70
-                                : Colors.black87,
+                            color: isMe ? Colors.white70 : Colors.black87,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -123,7 +119,8 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "${msg.timestamp.hour}:${msg.timestamp.minute.toString().padLeft(2,'0')}",
+                          DateFormat.jm()
+                              .format(msg.timestamp.toLocal()), // 08:30 PM
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontSize: 10,
