@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
+import 'package:gmsflutter/chat_page/chat_page.dart';
 import 'package:gmsflutter/merchandiser%20page/save_buyer.dart';
 import 'package:gmsflutter/merchandiser%20page/view_bom_style.dart';
 import 'package:gmsflutter/merchandiser%20page/view_buyer.dart';
@@ -90,6 +91,12 @@ class MerchandiserProfile extends StatelessWidget {
                       icon: Icons.check_circle_outline,
                       text: "Raw Materials Check",
                       onTap: () => _navigate(context, ViewRawMaterialsCheck())),
+                  _buildDrawerItem(
+                    icon: Icons.check_circle_outline,
+                    text: "Chat Box",
+                    onTap: () => _navigate(context, const ChatPage()),
+                  ),
+
                   const Divider(),
                   _buildDrawerItem(
                     icon: Icons.logout,

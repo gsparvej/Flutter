@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
+import 'package:gmsflutter/chat_page/chat_page.dart';
 import 'package:gmsflutter/purchase%20pages/save_item.dart';
 import 'package:gmsflutter/purchase%20pages/save_vendor.dart';
 import 'package:gmsflutter/purchase%20pages/view_half_po.dart';
@@ -96,6 +97,12 @@ class PurchaseManagerProfile extends StatelessWidget {
                       icon: Icons.people,
                       text: "View Vendor List",
                       onTap: () => _navigate(context, ViewVendorList())),
+                  _buildDrawerItem(
+                    icon: Icons.check_circle_outline,
+                    text: "Chat Box",
+                    onTap: () => _navigate(context, const ChatPage()),
+                  ),
+
                   const Divider(),
                   _buildDrawerItem(
                     icon: Icons.logout,

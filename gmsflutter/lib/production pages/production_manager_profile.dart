@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gmsflutter/auth/login_page.dart';
+import 'package:gmsflutter/chat_page/chat_page.dart';
 import 'package:gmsflutter/production%20pages/line_view_and_save.dart';
 import 'package:gmsflutter/production%20pages/machine_view_and_save.dart';
 import 'package:gmsflutter/production%20pages/production_summary.dart';
@@ -100,6 +101,11 @@ class ProductionManagerProfile extends StatelessWidget {
                     icon: Icons.inventory,
                     text: 'View Cut Bundle',
                     onTap: () => _navigate(context, ViewCutBundle()),
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.check_circle_outline,
+                    text: "Chat Box",
+                    onTap: () => _navigate(context, const ChatPage()),
                   ),
                   const Divider(),
                   _buildDrawerItem(
