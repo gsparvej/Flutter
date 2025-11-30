@@ -1,4 +1,5 @@
 class ProductionSummary {
+  int? orderId; // added
   int? shortSTotal;
   int? shortMTotal;
   int? shortLTotal;
@@ -16,25 +17,28 @@ class ProductionSummary {
   int? remainingFullLQty;
   int? remainingFullXLQty;
 
-  ProductionSummary(
-      {this.shortSTotal,
-        this.shortMTotal,
-        this.shortLTotal,
-        this.shortXLTotal,
-        this.fullSTotal,
-        this.fullMTotal,
-        this.fullLTotal,
-        this.fullXLTotal,
-        this.remainingShortSQty,
-        this.remainingShortMQty,
-        this.remainingShortLQty,
-        this.remainingShortXLQty,
-        this.remainingFullSQty,
-        this.remainingFullMQty,
-        this.remainingFullLQty,
-        this.remainingFullXLQty});
+  ProductionSummary({
+    this.orderId,
+    this.shortSTotal,
+    this.shortMTotal,
+    this.shortLTotal,
+    this.shortXLTotal,
+    this.fullSTotal,
+    this.fullMTotal,
+    this.fullLTotal,
+    this.fullXLTotal,
+    this.remainingShortSQty,
+    this.remainingShortMQty,
+    this.remainingShortLQty,
+    this.remainingShortXLQty,
+    this.remainingFullSQty,
+    this.remainingFullMQty,
+    this.remainingFullLQty,
+    this.remainingFullXLQty,
+  });
 
   ProductionSummary.fromJson(Map<String, dynamic> json) {
+    orderId = json['orderId'];
     shortSTotal = json['shortSTotal'];
     shortMTotal = json['shortMTotal'];
     shortLTotal = json['shortLTotal'];
@@ -54,23 +58,24 @@ class ProductionSummary {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['shortSTotal'] = this.shortSTotal;
-    data['shortMTotal'] = this.shortMTotal;
-    data['shortLTotal'] = this.shortLTotal;
-    data['shortXLTotal'] = this.shortXLTotal;
-    data['fullSTotal'] = this.fullSTotal;
-    data['fullMTotal'] = this.fullMTotal;
-    data['fullLTotal'] = this.fullLTotal;
-    data['fullXLTotal'] = this.fullXLTotal;
-    data['remainingShortSQty'] = this.remainingShortSQty;
-    data['remainingShortMQty'] = this.remainingShortMQty;
-    data['remainingShortLQty'] = this.remainingShortLQty;
-    data['remainingShortXLQty'] = this.remainingShortXLQty;
-    data['remainingFullSQty'] = this.remainingFullSQty;
-    data['remainingFullMQty'] = this.remainingFullMQty;
-    data['remainingFullLQty'] = this.remainingFullLQty;
-    data['remainingFullXLQty'] = this.remainingFullXLQty;
-    return data;
+    return {
+      'orderId': orderId,
+      'shortSTotal': shortSTotal,
+      'shortMTotal': shortMTotal,
+      'shortLTotal': shortLTotal,
+      'shortXLTotal': shortXLTotal,
+      'fullSTotal': fullSTotal,
+      'fullMTotal': fullMTotal,
+      'fullLTotal': fullLTotal,
+      'fullXLTotal': fullXLTotal,
+      'remainingShortSQty': remainingShortSQty,
+      'remainingShortMQty': remainingShortMQty,
+      'remainingShortLQty': remainingShortLQty,
+      'remainingShortXLQty': remainingShortXLQty,
+      'remainingFullSQty': remainingFullSQty,
+      'remainingFullMQty': remainingFullMQty,
+      'remainingFullLQty': remainingFullLQty,
+      'remainingFullXLQty': remainingFullXLQty,
+    };
   }
 }

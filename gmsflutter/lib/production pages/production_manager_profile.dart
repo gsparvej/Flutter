@@ -66,11 +66,17 @@ class ProductionManagerProfile extends StatelessWidget {
                     text: 'Add Cut Bundle',
                     onTap: () => _navigate(context, SaveCutBundle()),
                   ),
-                  // _buildDrawerItem(
-                  //   icon: Icons.analytics,
-                  //   text: 'Production Summary',
-                  //   onTap: () => _navigate(context, const AllSummaryPage()),
-                  // ),
+                  _buildDrawerItem(
+                    icon: Icons.analytics,
+                    text: 'Production Summary',
+                    onTap: () {
+                      // Replace this with your actual order IDs
+                      List<int> orderIds = [1, 2, 3, 4, 5]; // example IDs
+                      _navigate(context, ProductionSummaryPage(orderIds: orderIds));
+                    },
+                  ),
+
+
                   const Divider(),
                   _buildDrawerItem(
                     icon: Icons.view_list,
