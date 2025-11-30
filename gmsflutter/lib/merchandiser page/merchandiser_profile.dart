@@ -92,7 +92,7 @@ class MerchandiserProfile extends StatelessWidget {
                       text: "Raw Materials Check",
                       onTap: () => _navigate(context, ViewRawMaterialsCheck())),
                   _buildDrawerItem(
-                    icon: Icons.check_circle_outline,
+                    icon: Icons.chat_bubble_outline,
                     text: "Chat Box",
                     onTap: () => _navigate(context, const ChatPage()),
                   ),

@@ -103,7 +103,7 @@ class ProductionManagerProfile extends StatelessWidget {
                     onTap: () => _navigate(context, ViewCutBundle()),
                   ),
                   _buildDrawerItem(
-                    icon: Icons.check_circle_outline,
+                    icon: Icons.chat_bubble_outline,
                     text: "Chat Box",
                     onTap: () => _navigate(context, const ChatPage()),
                   ),
