@@ -53,3 +53,73 @@ This module is restricted to users with **Admin** privileges. Access control ens
 
 ---
 
+
+ <!-- merchandiser section -->
+
+ # 👗 Merchandiser Module: Garments Management System (RMG)
+
+This README provides a complete overview of the **Merchandiser Module** based on the provided UI screenshots. This module is designed to manage the merchandising workflow, including buyers, orders, BOM (Bill of Materials), raw material calculations, and UOM (Unit of Measurement) management.
+
+---
+
+## 🌟 Key Features
+
+The Merchandiser Module offers end‑to‑end control over merchandising operations:
+
+* **Buyer Management:** Add, view, and manage buyer profiles.
+* **Order Management:** Create and track orders, view detailed breakdowns, and search orders.
+* **BOM (Bill of Materials):** Generate, edit, and view BOM by style code or as a list.
+* **Raw Material Calculations:** Auto‑calculate required materials for production based on style and order.
+* **UOM Management:** Manage units of measurement used across materials and orders.
+* **Merchandiser Dashboard & Profile:** Overview of tasks with profile viewing options.
+
+---
+
+## 🖼️ Module Screenshots Overview
+
+Below is the screenshot documentation with paths: `screenshots/merchandiser/filename.PNG`.
+
+| Screenshot                             | File Name                                  | Preview                                                                                      | Description                                        |
+| :------------------------------------- | :----------------------------------------- | :------------------------------------------------------------------------------------------- | :------------------------------------------------- |
+| **Add Buyer (Form 1)**                 | `add buyer 1.PNG`                          | ![add buyer 1](screenshots/merchandiser/add%20buyer%201.PNG)                                 | Basic buyer information input form.                |
+| **Add Buyer (Form 2)**                 | `add buyer 2.PNG`                          | ![add buyer 2](screenshots/merchandiser/add%20buyer%202.PNG)                                 | Additional buyer details submission screen.        |
+| **BOM Details by Style Code**          | `BOM details by StyleCode.PNG`             | ![BOM details style](screenshots/merchandiser/BOM%20details%20by%20StyleCode.PNG)            | BOM breakdown for a specific style code.           |
+| **BOM List**                           | `BOM list.PNG`                             | ![bom list](screenshots/merchandiser/BOM%20list.PNG)                                         | List of all generated BOMs.                        |
+| **Buyer List**                         | `buyer list.PNG`                           | ![buyer list](screenshots/merchandiser/buyer%20list.PNG)                                     | Displays all registered buyers.                    |
+| **Merchandiser Dashboard**             | `merchandiser dashboard.PNG`               | ![dashboard](screenshots/merchandiser/merchandiser%20dashboard.PNG)                          | Quick access panel for all merchandising features. |
+| **Merchandiser Profile**               | `merchandiser profile.PNG`                 | ![profile](screenshots/merchandiser/merchandiser%20profile.PNG)                              | Shows merchandiser personal information.           |
+| **Order Details (1)**                  | `order details 1.PNG`                      | ![order 1](screenshots/merchandiser/order%20details%201.PNG)                                 | Overview of an order with key attributes.          |
+| **Order Details (2)**                  | `order details 2.PNG`                      | ![order 2](screenshots/merchandiser/order%20details%202.PNG)                                 | Extended view of order specifications.             |
+| **Order List (Search View)**           | `order list by searching.PNG`              | ![order search](screenshots/merchandiser/order%20list%20by%20searching.PNG)                  | Orders filtered by search criteria.                |
+| **Order List (Full List)**             | `order list.PNG`                           | ![order list](screenshots/merchandiser/order%20list.PNG)                                     | Complete list of all orders.                       |
+| **Raw Materials Calculation (Search)** | `raw materials calculations by search.PNG` | ![raw mat search](screenshots/merchandiser/raw%20materials%20calculations%20by%20search.PNG) | Search and calculate required raw materials.       |
+| **Raw Materials Calculation (List)**   | `raw materials calculations list.PNG`      | ![raw mat list](screenshots/merchandiser/raw%20materials%20calculations%20list.PNG)          | List of all previously calculated raw materials.   |
+| **UOM List**                           | `UOM.PNG`                                  | ![uom](screenshots/merchandiser/UOM.PNG)                                                     | Displays all unit of measurement items.            |
+
+---
+
+## ⚙️ Technical Structure
+
+Below is the structural mapping of module entities and primary operations:
+
+| Entity            | Related Screens                     | Main Operations                    |
+| :---------------- | :---------------------------------- | :--------------------------------- |
+| **Buyer**         | add buyer 1 & 2, buyer list         | Add, Update, View buyers.          |
+| **Order**         | order list, order details 1 & 2     | Create, View, Search orders.       |
+| **BOM**           | BOM details by style code, BOM list | Generate, View, Update BOM.        |
+| **Raw Materials** | calculation screens                 | Auto‑calculate required materials. |
+| **UOM**           | UOM list                            | Manage types of measurement units. |
+
+---
+
+## 🔒 Access & Permissions
+
+Only authorized **Merchandisers** can access this module. Data is restricted and securely handled using role‑based routing and backend validation.
+
+---
+
+## 📌 Notes
+
+This documentation is based entirely on provided UI screenshots and reflects the Merchandising workflow of a Garments Management System (RMG).
+
+---
