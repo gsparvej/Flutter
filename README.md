@@ -123,3 +123,75 @@ Only authorized **Merchandisers** can access this module. Data is restricted and
 This documentation is based entirely on provided UI screenshots and reflects the Merchandising workflow of a Garments Management System (RMG).
 
 ---
+
+
+<!-- production -->
+
+# 🏭 Production Manager Module: Garments Management System (RMG)
+
+This README provides a detailed overview of the **Production Manager Module** based on the provided UI screenshots. This module allows production teams to manage cutting plans, cut bundles, daily production records, machine info, and line-wise workflow efficiently.
+
+---
+
+## 🌟 Key Features
+
+The Production Manager Module covers all essential production tracking and management tasks:
+
+* **Cutting Plan Management:** Create, search, and view cutting plans.
+* **Cut Bundle Management:** Add cut bundles and browse bundles by date or cutting plan.
+* **Daily Production Tracking:** List and search daily production based on date or order.
+* **Production Order Management:** View production order details with various filtering options.
+* **Line & Machine Management:** Save and view production lines and machine information.
+* **Production Dashboard & Profile:** Central dashboard for all production metrics with profile view.
+
+---
+
+## 🖼️ Module Screenshots Overview
+
+Screenshot documentation path format: `screenshots/production manager/filename.PNG`.
+
+| Screenshot                                     | File Name                                      | Preview                                                                                                   | Description                                       |
+| :--------------------------------------------- | :--------------------------------------------- | :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------ |
+| **Add Cut Bundle**                             | `add cut bundle.PNG`                           | ![add cut bundle](screenshots/production%20manager/add%20cut%20bundle.PNG)                                | Create and store new cut bundle details.          |
+| **Cut Bundle List (Search by Date)**           | `cut bundle list search by date.PNG`           | ![cut bundle list date](screenshots/production%20manager/cut%20bundle%20list%20search%20by%20date.PNG)    | Search existing cut bundles by date.              |
+| **Cut Bundle List**                            | `cut bundle list.PNG`                          | ![cut bundle list](screenshots/production%20manager/cut%20bundle%20list.PNG)                              | Shows all available cut bundles.                  |
+| **Cut Bundle Search by Cutting Plan ID**       | `cut bundle search by cutting plan ID.PNG`     | ![cut bundle cpID](screenshots/production%20manager/cut%20bundle%20search%20by%20cutting%20plan%20ID.PNG) | Search bundles linked to a specific cutting plan. |
+| **Cutting Plan List**                          | `cutting plan list.PNG`                        | ![cutting list](screenshots/production%20manager/cutting%20plan%20list.PNG)                               | Displays all cutting plans.                       |
+| **Cutting Plan Search by Date**                | `cutting plan search by date.PNG`              | ![cutting search date](screenshots/production%20manager/cutting%20plan%20search%20by%20date.PNG)          | Search cutting plans using date filters.          |
+| **Day-wise Production List**                   | `day wise production list.PNG`                 | ![dwp list](screenshots/production%20manager/day%20wise%20production%20list.PNG)                          | View day-by-day production output.                |
+| **Day-wise Production Search by Date**         | `day wise production search by date.PNG`       | ![dwp search date](screenshots/production%20manager/day%20wise%20production%20search%20by%20date.PNG)     | Filter day-wise output by date.                   |
+| **Day-wise Production Search by Order ID**     | `day wise production search by order ID.PNG`   | ![dwp order](screenshots/production%20manager/day%20wise%20production%20search%20by%20order%20ID.PNG)     | Search production records by order ID.            |
+| **Line Save & View**                           | `line save and view.PNG`                       | ![line view](screenshots/production%20manager/line%20save%20and%20view.PNG)                               | Add and view production line details.             |
+| **Machine Add & View**                         | `machine add and view.PNG`                     | ![machine view](screenshots/production%20manager/machine%20add%20and%20view.PNG)                          | Manage sewing or production machines.             |
+| **Production Manager Dashboard**               | `production manager dashboard.PNG`             | ![dashboard](screenshots/production%20manager/production%20manager%20dashboard.PNG)                       | Centralized dashboard overview.                   |
+| **Production Manager Profile**                 | `production manager profile.PNG`               | ![profile](screenshots/production%20manager/production%20manager%20profile.PNG)                           | Profile details of the production manager.        |
+| **Production Order List (Search by Date)**     | `production order list search by date.PNG`     | ![pol date](screenshots/production%20manager/production%20order%20list%20search%20by%20date.PNG)          | Filter production orders using a date range.      |
+| **Production Order List (Search by Order ID)** | `production order list search by order ID.PNG` | ![pol id](screenshots/production%20manager/production%20order%20list%20search%20by%20order%20ID.PNG)      | Search production orders by order ID.             |
+| **Production Order List**                      | `production order list.PNG`                    | ![pol](screenshots/production%20manager/production%20order%20list.PNG)                                    | View all production orders in the system.         |
+
+---
+
+## ⚙️ Technical Structure
+
+| Entity                 | Related Screens                   | Operations                       |
+| :--------------------- | :-------------------------------- | :------------------------------- |
+| **Cutting Plan**       | cutting plan list, search by date | Create, Read, Filter.            |
+| **Cut Bundle**         | add cut bundle, bundle lists      | Add, View, Search.               |
+| **Daily Production**   | day-wise screens                  | Log, View, Search by date/order. |
+| **Production Order**   | order list variations             | Track, View, Filter orders.      |
+| **Line Management**    | line save & view                  | Create, Manage lines.            |
+| **Machine Management** | machine add & view                | Add and manage machine info.     |
+
+---
+
+## 🔒 Access & Permissions
+
+Only users assigned the role of **Production Manager** have access to this module. Data operations are restricted using role-based authorization.
+
+---
+
+## 📌 Notes
+
+This documentation is fully based on the provided screenshots and represents the workflow followed by a production department in a Garments Management System.
+
+---
