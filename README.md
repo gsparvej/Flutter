@@ -195,3 +195,69 @@ Only users assigned the role of **Production Manager** have access to this modul
 This documentation is fully based on the provided screenshots and represents the workflow followed by a production department in a Garments Management System.
 
 ---
+<!-- purchase -->
+
+# 🛒 Purchase Manager Module: Garments Management System (RMG)
+
+This README provides a detailed overview of the **Purchase Manager Module** based on the provided UI screenshots. This module handles vendor management, purchase requisitions, item inventory, and purchase orders—ensuring smooth procurement operations in a Garments Production Environment.
+
+---
+
+## 🌟 Key Features
+
+The Purchase Manager Module streamlines all procurement activities:
+
+* **Vendor Management:** Add vendors, view vendor details, and maintain supplier records.
+* **Item & Inventory Management:** Manage item lists and inventory details.
+* **Purchase Requisition Processing:** View and analyze requisition requests sent by departments.
+* **Purchase Order Management:** Create, view, and verify purchase orders.
+* **Dashboard & Profile:** Quick access to all purchase workflows and user profile.
+
+---
+
+## 🖼️ Module Screenshots Overview
+
+Screenshots follow the structure: `screenshots/purchase manager/filename.PNG`.
+
+| Screenshot                     | File Name                        | Preview                                                                         | Description                                       |
+| :----------------------------- | :------------------------------- | :------------------------------------------------------------------------------ | :------------------------------------------------ |
+| **Add Vendor (Form 1)**        | `add vendor 1.PNG`               | ![add vendor 1](screenshots/purchase%20manager/add%20vendor%201.PNG)            | Basic vendor details entry screen.                |
+| **Add Vendor (Form 2)**        | `add vendor 2.PNG`               | ![add vendor 2](screenshots/purchase%20manager/add%20vendor%202.PNG)            | Additional vendor information submission.         |
+| **Inventory Overview**         | `inventory.PNG`                  | ![inventory](screenshots/purchase%20manager/inventory.PNG)                      | Shows material inventory categories.              |
+| **Item List**                  | `item list.PNG`                  | ![item list](screenshots/purchase%20manager/item%20list.PNG)                    | List of items used in procurement.                |
+| **PO Details (Screen 1)**      | `PO details 1.PNG`               | ![po details 1](screenshots/purchase%20manager/PO%20details%201.PNG)            | Displays primary purchase order details.          |
+| **PO Details (Screen 2)**      | `PO details 2.PNG`               | ![po details 2](screenshots/purchase%20manager/PO%20details%202.PNG)            | Extended item/quantity information of a PO.       |
+| **PO List**                    | `PO list.PNG`                    | ![po list](screenshots/purchase%20manager/PO%20list.PNG)                        | View all purchase orders in the system.           |
+| **Purchase Manager Dashboard** | `purchase manager dashboard.PNG` | ![dashboard](screenshots/purchase%20manager/purchase%20manager%20dashboard.PNG) | Main hub for procurement tasks.                   |
+| **Purchase Manager Profile**   | `purchase manager profile.PNG`   | ![profile](screenshots/purchase%20manager/purchase%20manager%20profile.PNG)     | View/update purchase manager information.         |
+| **Requisition Details**        | `requisition details.PNG`        | ![req details](screenshots/purchase%20manager/requisition%20details.PNG)        | Shows item quantity and approval status.          |
+| **Requisition List**           | `requisition list.PNG`           | ![req list](screenshots/purchase%20manager/requisition%20list.PNG)              | Displays all requisition requests.                |
+| **Save Item**                  | `save item.PNG`                  | ![save item](screenshots/purchase%20manager/save%20item.PNG)                    | Add new item to inventory.                        |
+| **Vendor Details**             | `vendor details.PNG`             | ![vendor details](screenshots/purchase%20manager/vendor%20details.PNG)          | Shows complete information for a selected vendor. |
+| **Vendor List**                | `vendor list.PNG`                | ![vendor list](screenshots/purchase%20manager/vendor%20list.PNG)                | List of all registered vendors.                   |
+
+---
+
+## ⚙️ Technical Structure
+
+| Entity                  | Related Screens                                 | Main Operations                         |
+| :---------------------- | :---------------------------------------------- | :-------------------------------------- |
+| **Vendor**              | add vendor screens, vendor list, vendor details | Create, View, Update vendor info.       |
+| **Item**                | item list, save item                            | Add, Edit, Manage item details.         |
+| **Inventory**           | inventory overview                              | Track material categories.              |
+| **Requisition**         | requisition list, requisition details           | Review, Approve, Reject requests.       |
+| **Purchase Order (PO)** | PO list, PO details                             | Create POs, Review quantities, Approve. |
+
+---
+
+## 🔒 Access & Permissions
+
+Only users assigned the **Purchase Manager** role can access this module. Operations such as PO approval and vendor registration are secure and role-restricted.
+
+---
+
+## 📌 Notes
+
+This README is entirely based on the provided UI screenshots and reflects the procurement workflow in a modern Garments Management System.
+
+---
